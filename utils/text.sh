@@ -1,0 +1,56 @@
+#!/bin/bash
+
+# text formatting styles
+TEXT_STYLE_BOLD="\e[1m"
+TEXT_STYLE_DIM="\e[2m"
+TEXT_STYLE_UNDERLINE="\e[4m"
+TEXT_STYLE_BLINK="\e[5m"
+TEXT_STYLE_REVERSE="\e[7m" # swaps foreground and background colors actually
+TEXT_STYLE_HIDDEN="\e[8m"  # doesn't echo the characters, useful for pwd input
+
+# text formatting resets
+TEXT_STYLE_RESET_ALL="\e[0m"
+TEXT_STYLE_RESET_BOLD="\e[21m"
+TEXT_STYLE_RESET_DIM="\e[22m"
+TEXT_STYLE_RESET_UNDERLINE="\e[24m"
+TEXT_STYLE_RESET_BLINK="\e[25m"
+TEXT_STYLE_RESET_REVERSE="\e[27m"
+TEXT_STYLE_RESET_HIDDEN="\e[28m"
+
+# text foreground colors (16)
+TEXT_FG_DEFAULT="\e[39m"
+TEXT_FG_BLACK="\e[30m"
+TEXT_FG_RED="\e[31m"
+TEXT_FG_GREEN="\e[32m"
+TEXT_FG_YELLOW="\e[33m"
+TEXT_FG_BLUE="\e[34m"
+TEXT_FG_MAGENTA="\e[35m"
+TEXT_FG_CYAN="\e[36m"
+TEXT_FG_LIGHT_GRAY="\e[37m"
+TEXT_FG_DARK_GRAY="\e[90m"
+TEXT_FG_LIGHT_RED="\e[91m"
+TEXT_FG_LIGHT_GREEN="\e[92m"
+TEXT_FG_LIGHT_YELLOW="\e[93m"
+TEXT_FG_LIGHT_BLUE="\e[94m"
+TEXT_FG_LIGHT_MAGENTA="\e[95m"
+TEXT_FG_LIGHT_CYAN="\e[96m"
+TEXT_FG_WHITE="\e[97m"
+
+# text background colors (16)
+TEXT_BG_DEFAULT="\e[49m"
+TEXT_BG_BLACK="\e[40m"
+TEXT_BG_RED="\e[41m"
+TEXT_BG_GREEN="\e[42m"
+TEXT_BG_YELLOW="\e[43m"
+TEXT_BG_BLUE="\e[44m"
+TEXT_BG_MAGENTA="\e[45m"
+TEXT_BG_CYAN="\e[46m"
+TEXT_BG_LIGHT_GRAY="\e[47m"
+TEXT_BG_DARK_GRAY="\e[100m"
+TEXT_BG_LIGHT_RED="\e[101m"
+TEXT_BG_LIGHT_GREEN="\e[102m"
+TEXT_BG_LIGHT_YELLOW="\e[103m"
+TEXT_BG_LIGHT_BLUE="\e[104m"
+TEXT_BG_LIGHT_MAGENTA="\e[105m"
+TEXT_BG_LIGHT_CYAN="\e[106m"
+TEXT_BG_WHITE="\e[107m"
