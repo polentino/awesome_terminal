@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # text formatting styles
 TEXT_STYLE_BOLD="\e[1m"

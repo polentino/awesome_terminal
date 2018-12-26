@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Function that's responsible to detect if the current working directory is under
 # (distributed) version control system and, if so, retrieves basic infos to the
@@ -31,6 +31,9 @@ function dvcs_detect {
   # is it a GIT repository?
   if [[ "$(git rev-parse --is-inside-work-tree 2> /dev/null)" == true ]] ; then
     BRANCH=$(git symbolic-ref --short HEAD)
+    if [ "$CONDENSED_BRANCH" = true ] ; then
+      shorten_branch_name $BRANCH
+    fi
     if [[ $(git status -s -uno | wc -l) != 0 ]] ; then
       BRANCH=${DIRTY_BRANCH_TEXT_FG}${BRANCH}${DEFAULT_TEXT_FG}
       if [ ! -z "${DIRTY_BRANCH_ICON}" ] ; then
@@ -57,7 +60,11 @@ function dvcs_detect {
 
   # is this a Mercurial repository?
   elif [[ "$(hg branch 2> /dev/null)" != "" ]] ; then
-    if [[ "$(hg branch)" != "" ]] ; then
+    BRANCH=$(hg branch)
+    if [ "$CONDENSED_BRANCH" = true ] ; then
+      shorten_branch_name $BRANCH
+    fi
+    if [[ "$(hg status -m -a -r -d -u)" != "" ]] ; then
       BRANCH=${DIRTY_BRANCH_TEXT_FG}${BRANCH}${DEFAULT_TEXT_FG}
       if [ ! -z "${DIRTY_BRANCH_ICON}" ] ; then
         ICON=" ${DIRTY_BRANCH_ICON}"
@@ -70,11 +77,37 @@ function dvcs_detect {
     fi
 
     # TODO find good branch icon
-    eval "$1='${TEXT_SEPARATOR}${HG_ICON}${BRANCH}${ICON}'"
+    eval "$1='${TEXT_SEPARATOR}${HG_ICON} ${BRANCH}${ICON}'"
 
   else
     eval "$1=' '"
   fi
+}
+
+# Function that's responsible to make the branch name readable, made especially when
+# the repo is managed by Atlassian's tools (jira,stash etc..). It condenses the part
+# of the branch name before the ticket number, and trims the part after it to a given
+# number of characteds, user defined.
+#
+# Expected variables:
+#   - $1      the branch name
+#
+# Sets:
+#   - BRANCH  the updated branch name
+function shorten_branch_name {
+  splitted_branch=(${1//[0-9]/ })
+  shortened_branch=$(echo $1 | sed -e 's/'${splitted_branch[1]}'*//g')
+  IFS='\/' read -r -a array <<< "$shortened_branch"
+  condensed_branch=""
+  for ((i = 0 ; i < ${#array[@]} -1 ; i++ )); do
+    condensed_branch="${condensed_branch}/${array[i]:0:1}"
+  done
+  condensed_branch="${condensed_branch}/${array[-1]}"
+  foo=${1#"$shortened_branch"}
+  if [[ ${#foo} -gt $BRANCH_DESCRIPTION_LENGTH ]] ; then
+    foo="${foo:0:$BRANCH_DESCRIPTION_LENGTH}..."
+  fi
+  eval "BRANCH=' '${condensed_branch}${foo}"
 }
 
 # Function that's responsible to detect the current working directory, and manipulate it

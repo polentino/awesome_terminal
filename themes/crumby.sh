@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 source ${AT_BASE_DIR}/utils/extra_symbols.sh
 source ${AT_BASE_DIR}/utils/text.sh
@@ -23,6 +23,8 @@ GITHUB_ICON=\\u${CODEPOINT_OF_LEFT_ANGLE_QUOTATION_MARK}'github @ '
 GITLAB_ICON=\\u${CODEPOINT_OF_LEFT_ANGLE_QUOTATION_MARK}'gitlab @ '
 HG_ICON=\\u${CODEPOINT_OF_LEFT_ANGLE_QUOTATION_MARK}'hg @'
 BRANCH_ICON=
+CONDENSED_BRANCH=true
+BRANCH_DESCRIPTION_LENGTH=30
 
 # cwd-related variables
 CWD_DETECT_ENABLED=true

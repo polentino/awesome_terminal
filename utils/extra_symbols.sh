@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # extra codepoints that comes from the current font in use in the terminal
 CODEPOINT_OF_BREADCRUMB_RIGHT='e0b0'
