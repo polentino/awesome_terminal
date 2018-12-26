@@ -37,3 +37,16 @@ your tastes, change the symbols used for example for ```home/<username>``` etc..
 Should you really change the way things are assembled and displayed for the current path, dvcs, battery and date
 informations, you can override the method ```cwd_detect``` , ```dvcs_detect``` or ```battery_detect``` in your theme file,
 for a finer-grained control.
+
+For people like me who's using [Jira](https://atlassian.com/software/jira) and, in general, Atlassian's tools, it's useful to
+condense the name of the current branch, as it is usually very long, because they're automatically generated from the
+feature/epic/bugfix from jira, in the form
+> `feature/master/XYZUVW-123-resolve-race-condition-in-parallel-executors`
+
+For this reason, by default, branches are collapsed like this
+> `/f/m/XYZUVW-123-resolve-race-condition-in-par...`
+
+where the length of the characters to keep after the ticket number is user configurable (by default, 30 chars). Of course, you 
+can toggle this feature off at any time.
+
+![Example of condensed branch name](imgs/condensed_branch.png)
