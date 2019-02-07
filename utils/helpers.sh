@@ -96,8 +96,8 @@ function dvcs_detect {
 #   - BRANCH  the updated branch name
 function shorten_branch_name {
   splitted_branch=(${1//[0-9]/ })
-  shortened_branch=$(echo $1 | sed -e 's/'${splitted_branch[1]}'*//g')
-  IFS='\/' read -r -a array <<< "$shortened_branch"
+  shortened_branch=($(echo $1 | sed -e 's/'${splitted_branch[1]}'*/ /g'))
+  IFS='\/' read -r -a array <<< "${shortened_branch[0]}"
   condensed_branch=""
   for ((i = 0 ; i < ${#array[@]} -1 ; i++ )); do
     condensed_branch="${condensed_branch}/${array[i]:0:1}"
