@@ -100,14 +100,15 @@ function shorten_branch_name {
   IFS='\/' read -r -a array <<< "${shortened_branch[0]}"
   condensed_branch=""
   for ((i = 0 ; i < ${#array[@]} -1 ; i++ )); do
-    condensed_branch="${condensed_branch}/${array[i]:0:1}"
+    condensed_branch=${condensed_branch}${array[i]:0:1}$BRANCH_SEPARATOR
   done
-  condensed_branch="${condensed_branch}/${array[-1]}"
+  condensed_branch="${condensed_branch}${array[-1]}"
   foo=${1#"$shortened_branch"}
   if [[ ${#foo} -gt $BRANCH_DESCRIPTION_LENGTH ]] ; then
     foo="${foo:0:$BRANCH_DESCRIPTION_LENGTH}..."
   fi
-  eval "BRANCH=' '${condensed_branch}${foo}"
+  condensed_branch="${condensed_branch}${array[-1]}"
+  eval "BRANCH=' ${condensed_branch}${foo}'"
 }
 
 # Function that's responsible to detect the current working directory, and manipulate it
