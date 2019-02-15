@@ -95,20 +95,31 @@ function dvcs_detect {
 # Sets:
 #   - BRANCH  the updated branch name
 function shorten_branch_name {
-  splitted_branch=(${1//[0-9]/ })
+  # remove everything after the last '/' character (included)
+  prefix=${1%[\/]*}
+  # now the prefix can be further tokenized
+  splitted_branch=(${prefix//\/\.+[0-9]\.+\// })
   shortened_branch=($(echo $1 | sed -e 's/'${splitted_branch[1]}'*/ /g'))
   IFS='\/' read -r -a array <<< "${shortened_branch[0]}"
+
   condensed_branch=""
   for ((i = 0 ; i < ${#array[@]} -1 ; i++ )); do
-    condensed_branch=${condensed_branch}${array[i]:0:1}$BRANCH_SEPARATOR
+    if [[ ${array[i]} =~ [0-9] ]] ; then
+        condensed_branch=${condensed_branch}${array[i]}$BRANCH_SEPARATOR
+    else
+        condensed_branch=${condensed_branch}${array[i]:0:1}$BRANCH_SEPARATOR
+    fi
   done
-  condensed_branch="${condensed_branch}${array[-1]}"
-  foo=${1#"$shortened_branch"}
-  if [[ ${#foo} -gt $BRANCH_DESCRIPTION_LENGTH ]] ; then
-    foo="${foo:0:$BRANCH_DESCRIPTION_LENGTH}..."
+  condensed_branch="${condensed_branch}${array[-1]}${1#"$shortened_branch"}"
+
+  # empirical way to compute the length, considering special characters
+  IFS='\\u' inarr=(${condensed_branch})
+  correction=$(((${#inarr[@]} - 2) * 3))
+  unset IFS
+  if ((${#condensed_branch} - correction > $BRANCH_DESCRIPTION_LENGTH)) ; then
+    condensed_branch="${condensed_branch:0:$BRANCH_DESCRIPTION_LENGTH + $correction}..."
   fi
-  condensed_branch="${condensed_branch}${array[-1]}"
-  eval "BRANCH=' ${condensed_branch}${foo}'"
+  eval "BRANCH=' ${condensed_branch}'"
 }
 
 # Function that's responsible to detect the current working directory, and manipulate it
